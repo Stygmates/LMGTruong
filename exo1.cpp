@@ -159,7 +159,7 @@ bool initialize()
 		statusOK = initializeVertexArray();
 	}
 
-	model.loadModel("bunn.obj");
+	model.loadModel("bunny.obj");
 	model.displayVertexBuffers();
 	if ( statusOK )
 	{
