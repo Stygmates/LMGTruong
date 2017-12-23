@@ -12,6 +12,7 @@ class Loader{
     public:
         void import( const char* filename );
         void loadData( std::vector< std::vector< glm::vec3 > >& positions );
+        void normalize( std::vector< std::vector< glm::vec3 > >& positions );
     private:
         const aiScene *scene;
         Assimp::Importer *importer;

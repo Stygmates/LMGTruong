@@ -159,7 +159,7 @@ bool initialize()
 		statusOK = initializeVertexArray();
 	}
 
-	model.loadModel("bunny.obj");
+	model.loadModel("obj/bunny.obj");
 	model.displayVertexBuffers();
 	if ( statusOK )
 	{
@@ -323,7 +323,7 @@ void display( void )
 	glBindVertexArray( model.vertexArray );
 	// - render primitives from array data (here interpreted as primitives of type "triangles")
 	//   => pass the first index of points and their numbers (1 triangle made of 3 points)
-	glDrawArrays( GL_TRIANGLES, 0, 3 );
+	glDrawArrays( GL_POINTS, 0, 3 );
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
 
