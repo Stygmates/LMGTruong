@@ -84,7 +84,7 @@ bool My3DModel::displayVertexBuffers()
 			std::vector< glm::vec3 >::iterator it2;
 			for( it2 = it->begin(); it2 != it->end(); ++it2 )
 			{
-				std::cout << it2->x << "," << it2->y << "," << it2->z << std::endl;
+				std::cout << it2->x << ", " << it2->y << ", " << it2->z << std::endl;
 			}
 		}
 }
