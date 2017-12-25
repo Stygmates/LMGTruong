@@ -14,14 +14,15 @@ My3DModel::~My3DModel()
 {
 }
 
-bool My3DModel::loadModel(const char* filename)
+bool My3DModel::loadModel(std::string filename)
 {
 	bool statusOK = true;
 	Loader *loader = new Loader();
 	loader->import( filename );
-	loader->loadData( this->positions );
+	loader->loadData( this->positions , this->indexes );
 	this->initializeVertexBuffers();
 	this->initializeVertexArray();
+	this->initializeIndexes();
 	return statusOK;
 }
 
@@ -44,6 +45,24 @@ bool My3DModel::initializeVertexBuffers()
 		//Add vboID to the vbo
 		this->vertexBuffer.push_back( vboID );
 	}
+	return statusOK;
+}
+
+bool My3DModel::initializeIndexes()
+{
+	bool statusOK = true;
+
+	// Index buffer
+	// - this buffer is used to separate topology from positions: send points + send toplogy (triangle: 3 vertex indices)
+    glGenBuffers( 1, &this->indexBuffer );
+    // buffer courant a manipuler
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indexBuffer );
+    // definit la taille du buffer et le remplit
+	int	numberOfIndices_ = static_cast< int >( this->indexes.size() );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, numberOfIndices_ * sizeof( GLuint ), this->indexes.data(), GL_STATIC_DRAW );
+    // buffer courant : rien
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
 	return statusOK;
 }
 
@@ -78,13 +97,29 @@ bool My3DModel::initializeVertexArray()
 
 bool My3DModel::displayVertexBuffers()
 {
-	    std::vector< std::vector< glm::vec3 > >::iterator it;
-		for( it = this->positions.begin(); it != this->positions.end(); ++it )
+	bool statusOK = true;
+	std::vector< std::vector< glm::vec3 > >::iterator it;
+	for( it = this->positions.begin(); it != this->positions.end(); ++it )
+	{
+		std::vector< glm::vec3 >::iterator it2;
+		for( it2 = it->begin(); it2 != it->end(); ++it2 )
 		{
-			std::vector< glm::vec3 >::iterator it2;
-			for( it2 = it->begin(); it2 != it->end(); ++it2 )
-			{
-				std::cout << it2->x << ", " << it2->y << ", " << it2->z << std::endl;
-			}
+			std::cout << it2->x << ", " << it2->y << ", " << it2->z << std::endl;
 		}
+	}
+	return statusOK;
+}
+
+int My3DModel::getNbVertices()
+{
+	int i = 0;
+	std::vector< std::vector < glm::vec3 > >::iterator it;
+	it = this->positions.begin();
+	for(it = this->positions.begin(); it != this->positions.end(); it++)
+	{
+		std::cerr << "Partie avec " << it->size() << " sommets." << std::endl; 
+		i += it->size();
+	}
+	std::cerr << "Nombre de sommets total: " << i << std::endl;
+	return i;
 }

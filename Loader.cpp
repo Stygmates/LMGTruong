@@ -5,37 +5,62 @@
 #include <vector>
 #include <cstdio>
 #include <iostream>
+#include <cassert>
+#include <fstream>
 
-void Loader::import( const char* filename )
+void Loader::import( std::string filename )
 {
     this->importer = new Assimp::Importer();
     this->scene = this->importer->ReadFile(filename, aiProcessPreset_TargetRealtime_Quality);
-    if( this->scene == NULL )
-    {
-        fprintf(stderr, "Erreur: Chargement de l'objet %s impossible.\n", filename);
-        exit(1);
-    }
+    assert( this->scene != NULL );
 }
 
-void Loader::loadData( std::vector< std::vector< glm::vec3 > >& positions )
+void Loader::loadData( std::vector< std::vector< glm::vec3 > >& positions, std::vector< unsigned int>& faces )
 {
-    if(this->scene->HasMeshes())
+    #ifdef DEBUG
+    std::ofstream verticesdebug;
+    verticesdebug.open("debug/vertices.txt");
+    std::ofstream indexesdebug;
+    indexesdebug.open("debug/indexes.txt");
+    #endif
+    if( this->scene->HasMeshes() )
     {
         positions.resize( this->scene->mNumMeshes );
         for( unsigned int i = 0; i < this->scene->mNumMeshes; i++ )
         {
-
             aiMesh *mesh = this->scene->mMeshes[ i ];
             positions[ i ].resize( mesh->mNumVertices );
-            for( unsigned int j = 0; j < mesh->mNumVertices; j++)
+            #ifdef DEBUG
+            verticesdebug << "Nombre de sommets: " << mesh->mNumVertices << std::endl;
+            indexesdebug << "Nombre de faces: " << mesh->mNumVertices << std::endl;
+            #endif
+            for( unsigned int j = 0; j < mesh->mNumVertices; j++ )
             {
                 const aiVector3D& position = mesh->mVertices[ j ];
                 glm::vec3 v = glm::vec3( position.x, position.y, position.z );
-                positions[ i ][ j ] = v; 
+                positions[ i ][ j ] = v;
+                #ifdef DEBUG
+                verticesdebug << "Sommet " << v.x << ", " << v.y << ", " << v.z << std::endl;
+                #endif
+            }
+            for( unsigned int j = 0; j < mesh->mNumFaces; j++ )
+            {
+                const aiFace& face = mesh->mFaces[ j ]; 
+                assert( face.mNumIndices == 3);
+                faces.push_back( face.mIndices[ 0 ] );
+                faces.push_back( face.mIndices[ 1 ] );
+                faces.push_back( face.mIndices[ 2 ] );
+                #ifdef DEBUG
+                indexesdebug << "Face " << face.mIndices[ 0 ] << ", " << face.mIndices[ 1 ] << ", " << face.mIndices[ 2 ] << std::endl;
+                #endif
             }
         }
         normalize( positions );
     }
+    #ifdef DEBUG
+    verticesdebug.close();
+    indexesdebug.close();
+    #endif
 }
 
 
@@ -43,26 +68,13 @@ void Loader::normalize( std::vector< std::vector< glm::vec3 > >& positions )
 {
     float minx, miny, minz;
     float maxx, maxy, maxz;
-    if( positions.size() > 0 )
-    {
-        if( positions[0].size() > 0 )
-        {
-            minx = positions[0][0].x;
-            maxx = positions[0][0].x;
-            miny = positions[0][0].y;
-            maxy = positions[0][0].y;
-            minz = positions[0][0].z;
-            maxz = positions[0][0].z;
-        }
-        else
-        {
-            std::cerr << "Erreur lors de la normalisation : vector vide.\n";
-        }
-    }
-    else
-    {
-        std::cerr << "Erreur lors de la normalisation : vector vide.\n";
-    }
+    assert( positions.size() > 0 );
+    minx = positions[0][0].x;
+    maxx = positions[0][0].x;
+    miny = positions[0][0].y;
+    maxy = positions[0][0].y;
+    minz = positions[0][0].z;
+    maxz = positions[0][0].z;
     std::vector< std::vector< glm::vec3 > >::iterator it;
 	for( it = positions.begin(); it != positions.end(); ++it )
 	{

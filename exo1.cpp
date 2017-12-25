@@ -7,6 +7,8 @@
 // STL
 #include <iostream>
 #include <vector>
+#include <sstream>
+#include <string>
 
 // System
 #include <cstdio>
@@ -64,6 +66,10 @@ My3DModel model;
 
 // Program id
 GLuint programID ;
+
+//Path to the obj
+std::string objname;
+
 /******************************************************************************
  ***************************** TYPE DEFINITION ********************************
  ******************************************************************************/
@@ -110,6 +116,7 @@ bool checkShader( GLuint shader )
 		}
 		return false;
 	}
+	return true;
 }
 
 /*bool checkShaderLinking( GLuint programID )
@@ -159,8 +166,8 @@ bool initialize()
 		statusOK = initializeVertexArray();
 	}
 
-	model.loadModel("obj/bunny.obj");
-	model.displayVertexBuffers();
+	model.loadModel( objname );
+	//model.displayVertexBuffers();
 	if ( statusOK )
 	{
 		statusOK = initializeShaderProgram();
@@ -314,8 +321,9 @@ void display( void )
 	glUseProgram( programID );
 
 	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
-	glUniform3f(uniformLocation, 0.f, 1.f, 0.f);
+	glUniform3f(uniformLocation, 1.f, 0.f, 0.f);
 
+	/*
 	// Render user custom data
 	// - for this example, store a default common color for all points (in OpenGL state machine)
 	//glColor3f( 1.f, 0.f, 0.f );
@@ -323,7 +331,17 @@ void display( void )
 	glBindVertexArray( model.vertexArray );
 	// - render primitives from array data (here interpreted as primitives of type "triangles")
 	//   => pass the first index of points and their numbers (1 triangle made of 3 points)
-	glDrawArrays( GL_POINTS, 0, 3 );
+	glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
+	*/
+
+	glBindVertexArray(model.vertexArray);
+
+	// Index buffer
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
+	
+	// Draw the triangles !
+	glDrawElements( GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void*)0 );
+
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
 
@@ -341,6 +359,12 @@ void display( void )
 int main( int argc, char** argv )
 {
 	std::cout << "Exo 1 - OpenGL with GLUT" << std::endl;
+	std::stringstream s;
+	if( argc == 2 )
+		s << "obj/" << argv[1];
+	else
+		s << "obj/cube.obj";
+	objname = s.str();
 
 	// Initialize the GLUT library
 	glutInit( &argc, argv );

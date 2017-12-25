@@ -10,8 +10,8 @@
 
 class Loader{
     public:
-        void import( const char* filename );
-        void loadData( std::vector< std::vector< glm::vec3 > >& positions );
+        void import( std::string filename );
+        void loadData( std::vector< std::vector< glm::vec3 > >& positions, std::vector< unsigned int>& faces);
         void normalize( std::vector< std::vector< glm::vec3 > >& positions );
     private:
         const aiScene *scene;

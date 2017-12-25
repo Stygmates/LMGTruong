@@ -11,11 +11,14 @@ private:
 public:
     My3DModel();
     ~My3DModel();
-    bool loadModel(const char* filename);
+    bool loadModel(std::string filename);
     bool initializeVertexBuffers();
+    bool initializeIndexes();
     bool initializeVertexArray();
     GLuint vertexArray;
     bool displayVertexBuffers();
-
+    int getNbVertices();
+    std::vector< unsigned int > indexes;
+    GLuint indexBuffer;
 };
 #endif
