@@ -328,17 +328,17 @@ void display( void )
 	// - for this example, store a default common color for all points (in OpenGL state machine)
 	//glColor3f( 1.f, 0.f, 0.f );
 	// - bind VAO as current vertex array (in OpenGL state machine)
-	glBindVertexArray( model.vertexArray );
+	glBindVertexArray( model.vaoID );
 	// - render primitives from array data (here interpreted as primitives of type "triangles")
 	//   => pass the first index of points and their numbers (1 triangle made of 3 points)
-	//glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
+	glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
 
 	// Index buffer
 	
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
+	//glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
 	// Draw the triangles !
-	glDrawElements( GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void*)0 );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	//glDrawElements( GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void*)0 );
+	//glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );

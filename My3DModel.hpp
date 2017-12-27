@@ -7,8 +7,10 @@
 class My3DModel{
 private:
     Loader *loader;
-    GLuint vertexBuffer;
+
+
     std::vector< glm::vec3 > positions;
+    std::vector<unsigned int> indexes;
     std::vector< glm::vec2 > texCoords;
     Texture *texture;
 public:
@@ -18,12 +20,15 @@ public:
     bool loadTexture(std::string textureFilename);
     //bool initializeVertexBuffers();
     bool initializeVertexBuffer();
-    bool initializeIndexes();
+    bool initializeIndexesBuffer();
+    bool initializeTexturesBuffer();
     bool initializeVertexArray();
-    GLuint vertexArray;
     bool displayVertexBuffers();
     int getNbVertices();
-    std::vector< unsigned int > indexes;
-    GLuint indexBuffer;
+
+    GLuint vertexID;
+    GLuint indexID;
+    GLuint textureID;
+    GLuint vaoID;
 };
 #endif
