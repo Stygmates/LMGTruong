@@ -16,7 +16,7 @@ void Loader::import( std::string filename )
     this->importer->SetPropertyInteger( AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT );
 }
 
-void Loader::loadData( std::vector< std::vector< glm::vec3 > >& positions, std::vector< unsigned int>& faces )
+void Loader::loadData(std::vector< std::vector< glm::vec3 > > &positions, std::vector< unsigned int > &faces, std::vector< glm::vec2 > &texCoords )
 {
     #ifdef DEBUG
     std::ofstream verticesdebug;
@@ -56,6 +56,15 @@ void Loader::loadData( std::vector< std::vector< glm::vec3 > >& positions, std::
                 indexesdebug << "\tFace " << j << ": " << face.mIndices[ 0 ] << ", " << face.mIndices[ 1 ] << ", " << face.mIndices[ 2 ] << std::endl;
                 //indexesdebug << face.mIndices[ 0 ] << std::endl << face.mIndices[ 1 ] << std::endl << face.mIndices[ 2 ] << std::endl;
                 #endif
+            }
+            if( mesh->HasTextureCoords( 0 ) )
+            {
+                texCoords.resize( mesh->mNumVertices );
+                for( unsigned int j = 0; j < mesh->mNumVertices; j++ )
+                {
+                    const aiVector3D& texCoord = mesh->mTextureCoords[ 0 ][ j ];
+                    texCoords[ j ] = glm::vec2(texCoord.x, texCoord.y );
+                }
             }
         }
         normalize( positions );
