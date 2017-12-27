@@ -36,7 +36,7 @@ const char* vertexShaderSource[] = {
 "out vec3 color;										\n"
 "void main( void )										\n"
 "{														\n"
-"color = vec3( 1.0, 0.0, 0.0 );							\n"
+"color = vec3( 0.0, 0.0, 50.0 );						\n"
 "gl_Position = vec4( position, 1.0 );					\n"
 "}														\n"
 };
@@ -48,8 +48,8 @@ const char* fragmentShaderSource[] = {
 "uniform vec3 meshColor;								\n"
 "void main( void )										\n"
 "{														\n"
-"fragmentColor = vec4( meshColor, 1.0 );				\n"
-"//fragmentColor = vec4( color, 1.0 );					\n"
+"//fragmentColor = vec4( meshColor, 1.0 );				\n"
+"fragmentColor = vec4( color, 1.0 );					\n"
 "}														\n"
 };	
 
@@ -323,7 +323,7 @@ void display( void )
 	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
 	glUniform3f(uniformLocation, 1.f, 0.f, 0.f);
 
-	/*
+	
 	// Render user custom data
 	// - for this example, store a default common color for all points (in OpenGL state machine)
 	//glColor3f( 1.f, 0.f, 0.f );
@@ -331,16 +331,14 @@ void display( void )
 	glBindVertexArray( model.vertexArray );
 	// - render primitives from array data (here interpreted as primitives of type "triangles")
 	//   => pass the first index of points and their numbers (1 triangle made of 3 points)
-	glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
-	*/
-
-	glBindVertexArray(model.vertexArray);
+	//glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
 
 	// Index buffer
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
 	
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
 	// Draw the triangles !
 	glDrawElements( GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void*)0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
@@ -361,7 +359,7 @@ int main( int argc, char** argv )
 	std::cout << "Exo 1 - OpenGL with GLUT" << std::endl;
 	std::stringstream s;
 	if( argc == 2 )
-		s << "obj/" << argv[1];
+		s << argv[1];
 	else
 		s << "obj/cube.obj";
 	objname = s.str();
@@ -369,9 +367,9 @@ int main( int argc, char** argv )
 	// Initialize the GLUT library
 	glutInit( &argc, argv );
 
-	// - configure the main framebuffer to store rgba colors,
-	//   and activate double buffering (for fluid/smooth visualization)
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE );
+		// - configure the main framebuffer to store rgba colors,
+		//   and activate double buffering (for fluid/smooth visualization)
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	// - window size and position
 	glutInitWindowSize( 1920, 1080 );
 	glutInitWindowPosition( 50, 50 );
