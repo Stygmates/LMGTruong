@@ -19,10 +19,17 @@ bool My3DModel::loadModel(std::string filename)
 	bool statusOK = true;
 	Loader *loader = new Loader();
 	loader->import( filename );
-	loader->loadData( this->positions , this->indexes );
+	loader->loadData( this->positions , this->indexes, this->texCoords );
 	this->initializeVertexBuffers();
 	this->initializeVertexArray();
 	this->initializeIndexes();
+	return statusOK;
+}
+
+bool My3DModel::loadTexture(std::string textureFilename)
+{
+	bool statusOK = true;
+	this->texture = new Texture( textureFilename );
 	return statusOK;
 }
 
