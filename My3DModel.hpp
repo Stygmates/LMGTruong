@@ -7,8 +7,8 @@
 class My3DModel{
 private:
     Loader *loader;
-    std::vector< GLuint > vertexBuffer;
-    std::vector< std::vector< glm::vec3 > > positions;
+    GLuint vertexBuffer;
+    std::vector< glm::vec3 > positions;
     std::vector< glm::vec2 > texCoords;
     Texture *texture;
 public:
@@ -16,7 +16,8 @@ public:
     ~My3DModel();
     bool loadModel(std::string filename);
     bool loadTexture(std::string textureFilename);
-    bool initializeVertexBuffers();
+    //bool initializeVertexBuffers();
+    bool initializeVertexBuffer();
     bool initializeIndexes();
     bool initializeVertexArray();
     GLuint vertexArray;
