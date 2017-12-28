@@ -1,14 +1,15 @@
 #ifndef __MY3DMODEL_HPP
 #define __MY3DMODEL_HPP
 #include <GL/gl.h>
-#include "Loader.hpp"
+#include "MeshLoader.hpp"
 #include "Texture.hpp"
 
 class My3DModel{
 private:
     Loader *loader;
-    
-public:
+    void normalize(std::vector<glm::vec3> &positions);
+
+  public:
     My3DModel();
     ~My3DModel();
 

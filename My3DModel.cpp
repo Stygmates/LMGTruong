@@ -1,7 +1,8 @@
-#include "Loader.hpp"
+#include "MeshLoader.hpp"
 #include <GL/glew.h>
 //Use std::cout and std::endl
 #include <iostream>
+#include <fstream>
 
 #include "My3DModel.hpp"
 
@@ -20,11 +21,78 @@ bool My3DModel::loadModel(std::string filename)
 	Loader *loader = new Loader();
 	loader->import( filename );
 	loader->loadData( this->positions , this->indexes, this->texCoords );
+	this->normalize(this->positions);
 	this->initializeVertexBuffer();
 	this->initializeIndexesBuffer();
 	this->initializeVertexArray();
 	this->initializeTexturesBuffer();
 	return statusOK;
+}
+
+void My3DModel::normalize(std::vector<glm::vec3> &positions)
+{
+#ifdef DEBUG
+	std::ofstream normalizeddebug;
+	normalizeddebug.open("debug/normalized.txt");
+	normalizeddebug << "Nombre de sommets: " << positions.size() << std::endl;
+#endif
+	float minx, miny, minz;
+	float maxx, maxy, maxz;
+	assert(positions.size() > 0);
+	minx = positions[0].x;
+	maxx = positions[0].x;
+	miny = positions[0].y;
+	maxy = positions[0].y;
+	minz = positions[0].z;
+	maxz = positions[0].z;
+	std::vector<glm::vec3>::iterator it;
+	for (it = positions.begin(); it != positions.end(); ++it)
+	{
+		if (minx > it->x)
+			minx = it->x;
+		if (miny > it->y)
+			miny = it->y;
+		if (minz > it->z)
+			minz = it->z;
+		if (maxx < it->x)
+			maxx = it->x;
+		if (maxy < it->y)
+			maxy = it->y;
+		if (maxz < it->z)
+			maxz = it->z;
+	}
+	if (minx == maxx)
+	{
+		std::cout << "xxx" << minx << std::endl;
+		maxx = 1;
+		minx = 0;
+	}
+	if (miny == maxy)
+	{
+		std::cout << "yyy" << miny << std::endl;
+		maxy = 1;
+		miny = 0;
+	}
+	if (minz == maxz)
+	{
+		std::cout << "zzz" << minz << std::endl;
+		maxz = 1;
+		minz = 0;
+	}
+	int j = 0;
+	for (it = positions.begin(); it != positions.end(); ++it)
+	{
+		it->x = (it->x - minx) / (maxx - minx);
+		it->x = (it->x * 2) - 1;
+		it->y = (it->y - miny) / (maxy - miny);
+		it->y = (it->y * 2) - 1;
+		it->z = (it->z - minz) / (maxz - minz);
+		it->z = (it->z * 2) - 1;
+#ifdef DEBUG
+		normalizeddebug << "\tSommet " << j << ": " << it->x << ", " << it->y << ", " << it->z << std::endl;
+#endif
+		j++;
+	}
 }
 
 bool My3DModel::loadTexture(std::string textureFilename)
