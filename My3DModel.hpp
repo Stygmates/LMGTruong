@@ -7,15 +7,13 @@
 class My3DModel{
 private:
     Loader *loader;
-
-
-    std::vector< glm::vec3 > positions;
-    std::vector<unsigned int> indexes;
-    std::vector< glm::vec2 > texCoords;
-    Texture *texture;
+    
 public:
     My3DModel();
     ~My3DModel();
+
+    Texture *texture;
+    
     bool loadModel(std::string filename);
     bool loadTexture(std::string textureFilename);
     //bool initializeVertexBuffers();
@@ -30,5 +28,9 @@ public:
     GLuint indexID;
     GLuint textureID;
     GLuint vaoID;
+
+    std::vector<glm::vec3> positions;
+    std::vector<unsigned int> indexes;
+    std::vector<glm::vec2> texCoords;
 };
 #endif

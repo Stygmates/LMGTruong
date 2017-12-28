@@ -6,8 +6,9 @@
 class Texture
 {
 private:
-    GLuint texture;
+    bool textureLoaded;
 public:
-    Texture( std::string filename );
+  Texture(std::string filename);
+  GLuint texture;
 };
 #endif

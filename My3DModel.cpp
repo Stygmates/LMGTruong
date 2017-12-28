@@ -23,6 +23,7 @@ bool My3DModel::loadModel(std::string filename)
 	this->initializeVertexBuffer();
 	this->initializeIndexesBuffer();
 	this->initializeVertexArray();
+	this->initializeTexturesBuffer();
 	return statusOK;
 }
 
@@ -128,6 +129,8 @@ bool My3DModel::initializeVertexArray()
 	glBindVertexArray( 0 );
 	// Unbind vbo
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	glBindBuffer( GL_TEXTURE_BUFFER, 0 );
 
 	return statusOK;
 }

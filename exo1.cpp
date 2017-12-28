@@ -5,11 +5,12 @@
  ******************************************************************************/
 
 // STL
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <sstream>
 #include <string>
-
+#include <cstdlib>
 // System
 #include <cstdio>
 
@@ -26,32 +27,85 @@
 
 #include "My3DModel.hpp"
 
-/******************************************************************************
+	/******************************************************************************
  ****************************** NAMESPACE SECTION *****************************
  ******************************************************************************/
 
-const char* vertexShaderSource[] = {
-"#version 130											\n"
-"in vec3 position;										\n"
-"out vec3 color;										\n"
-"void main( void )										\n"
-"{														\n"
-"color = vec3( 0.0, 0.0, 50.0 );						\n"
-"gl_Position = vec4( position, 1.0 );					\n"
-"}														\n"
-};
+	// const char* vertexShaderSource[] = {
+	// "#version 130											\n"
+	// "in vec3 position;										\n"
+	// "out vec3 color;										\n"
+	// "void main( void )										\n"
+	// "{														\n"
+	// "color = vec3( 0.0, 0.0, 50.0 );						\n"
+	// "gl_Position = vec4( position, 1.0 );					\n"
+	// "}														\n"
+	// };
 
-const char* fragmentShaderSource[] = {
-"#version 130											\n"
-"in vec3 color;											\n"
-"out vec4 fragmentColor;								\n"
-"uniform vec3 meshColor;								\n"
-"void main( void )										\n"
-"{														\n"
-"//fragmentColor = vec4( meshColor, 1.0 );				\n"
-"fragmentColor = vec4( color, 1.0 );					\n"
-"}														\n"
-};	
+	// const char* fragmentShaderSource[] = {
+	// "#version 130											\n"
+	// "in vec3 color;											\n"
+	// "out vec4 fragmentColor;								\n"
+	// "uniform vec3 meshColor;								\n"
+	// "void main( void )										\n"
+	// "{														\n"
+	// "//fragmentColor = vec4( meshColor, 1.0 );				\n"
+	// "fragmentColor = vec4( color, 1.0 );					\n"
+	// "}														\n"
+	// };
+
+	// Vertex shader
+	const char *vertexShaderSource;
+// = {
+// 	//	    "#version 330 core                             \n"
+// 	"#version 130									\n"
+// 	"												\n"
+// 	" // INPUT										\n"
+// 	" // - vertex attributes						\n"
+// 	" in vec2 position;								\n"
+// 	" in vec2 textureCoordinate;					\n"
+// 	"												\n"
+// 	" // UNIFORM									\n"
+// 	" // - animation								\n"
+// 	"												\n"
+// 	" // OUTPUT										\n"
+// 	" out vec2 uv;									\n"
+// 	"												\n"
+// 	" // MAIN										\n"
+// 	"void main( void )								\n"
+// 	"{												\n"
+// 	"// Send position to Clip-space					\n"
+// 	"gl_Position = vec4( position, 0.0, 1.0 );		\n"
+// 	"uv = textureCoordinate;						\n"
+// 	"}												\n"
+// 	};
+
+// Fragment shader
+const char *fragmentShaderSource;
+//  = {
+// 	"#version 130									\n"
+// 	"												\n"
+// 	" // INPUT										\n"
+// 	" in vec2 uv;									\n"
+// 	"												\n"
+// 	" // UNIFORM									\n"
+// 	" // - mesh										\n"
+// 	" uniform vec3 meshColor;						\n"
+// 	" // - animation								\n"
+// 	"//Texture										\n"
+// 	" uniform sampler2D meshTexture;				\n"
+// 	"												\n"
+// 	" // OUTPUT										\n"
+// 	" out vec4 fragmentColor;						\n"
+// 	"												\n"
+// 	" // MAIN										\n"
+// 	"void main( void )								\n"
+// 	"{												\n"
+// 	"// Use animation							\n"
+// 	"//fragmentColor = vec4( meshColor, 1.0 );	\n"
+// 	"fragmentColor = texture( meshTexture, vec2(uv.s, 1.0 - uv.t ) );\n"
+// 	"}												\n"
+// 	};
 
 /******************************************************************************
  ************************* DEFINE AND CONSTANT SECTION ************************
@@ -69,14 +123,10 @@ GLuint programID ;
 
 //Path to the obj
 std::string objname;
-
+std::string texturename;
 /******************************************************************************
  ***************************** TYPE DEFINITION ********************************
  ******************************************************************************/
-
-/******************************************************************************
-***************************** METHOD DEFINITION ******************************
-******************************************************************************/
 
 /******************************************************************************
  ***************************** METHOD DEFINITION ******************************
@@ -167,6 +217,7 @@ bool initialize()
 	}
 
 	model.loadModel( objname );
+	model.loadTexture( texturename );
 	//model.displayVertexBuffers();
 	if ( statusOK )
 	{
@@ -268,6 +319,44 @@ bool initializeVertexArray()
 }
 
 /******************************************************************************
+ * Helper function used to load shader source code from files
+ *
+ * @param pFilename ...
+ *
+ * @return ...
+ ******************************************************************************/
+bool getFileContent(const std::string &pFilename, std::string &pFileContent)
+{
+	std::ifstream file(pFilename.c_str(), std::ios::in);
+	if (file)
+	{
+		// Initialize a string to store file content
+		file.seekg(0, std::ios::end);
+		pFileContent.resize(file.tellg());
+		file.seekg(0, std::ios::beg);
+
+		// Read file content
+		file.read(&pFileContent[0], pFileContent.size());
+
+		// Close file
+		file.close();
+
+		return true;
+	}
+	else
+	{
+		std::cerr << "Ouverture du fichier " << pFilename << " impossible." << std::endl;
+		return false;
+	}
+}
+
+bool endswith(const std::string &str, const std::string &suffix)
+{
+	return str.size() >= suffix.size() &&
+		   str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
+/******************************************************************************
  * Initialize shader program
  ******************************************************************************/
 bool initializeShaderProgram()
@@ -279,8 +368,8 @@ bool initializeShaderProgram()
 	GLuint vertexShaderID = glCreateShader( GL_VERTEX_SHADER );
 	GLuint fragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
 	//
-	glShaderSource( vertexShaderID, 1, vertexShaderSource, nullptr );
-	glShaderSource( fragmentShaderID, 1, fragmentShaderSource, nullptr );
+	glShaderSource( vertexShaderID, 1, &vertexShaderSource, nullptr );
+	glShaderSource( fragmentShaderID, 1, &fragmentShaderSource, nullptr );
 	
 	//Compile the shaders
 	glCompileShader( vertexShaderID );
@@ -320,10 +409,20 @@ void display( void )
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glUseProgram( programID );
 
-	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
-	glUniform3f(uniformLocation, 1.f, 0.f, 0.f);
+	float r1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	float r2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	float r3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 
-	
+	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
+	if( uniformLocation >= 0 )
+		glUniform3f(uniformLocation, r1, r2, r3);
+		//glUniform3f(uniformLocation, 1.f, 0.f, 0.f);
+	std::cout << r1 << ", " << r2 << ", " << r3 << std::endl;
+
+	uniformLocation = glGetUniformLocation( programID, "meshTexture");
+	if (uniformLocation >= 0)
+		glUniform1i(uniformLocation, 0); // 0 pour GL_TEXTURE0
+
 	// Render user custom data
 	// - for this example, store a default common color for all points (in OpenGL state machine)
 	//glColor3f( 1.f, 0.f, 0.f );
@@ -331,14 +430,13 @@ void display( void )
 	glBindVertexArray( model.vaoID );
 	// - render primitives from array data (here interpreted as primitives of type "triangles")
 	//   => pass the first index of points and their numbers (1 triangle made of 3 points)
-	glDrawArrays( GL_POINTS, 0, model.getNbVertices() );
+	//glDrawArrays( GL_TRIANGLES, 0, model.getNbVertices() );
 
-	// Index buffer
-	
-	//glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, model.indexBuffer );
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, model.texture->texture);
+
 	// Draw the triangles !
-	//glDrawElements( GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void*)0 );
-	//glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	glDrawElements(GL_TRIANGLE_STRIP, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
 
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
@@ -357,19 +455,53 @@ void display( void )
 int main( int argc, char** argv )
 {
 	std::cout << "Exo 1 - OpenGL with GLUT" << std::endl;
-	std::stringstream s;
-	if( argc == 2 )
-		s << argv[1];
-	else
-		s << "obj/cube.obj";
-	objname = s.str();
+
+	//Initialisation fichiers par defaut
+	objname = "obj/cube.obj";
+	texturename = "textures/myImage.jpg";
+	std::string vertexShaderFilename = "glsl/vertexInitial.vert";
+	std::string fragmentShaderFilename = "glsl/fragmentInitial.frag";
+
+	for( int i = 1; i < argc; i++ )
+	{
+		if( endswith( argv[ i ], "obj" ) )
+		{
+			objname = argv[ i ];
+			std::cout << "Obj: " << argv[ i ] << std::endl;
+		}
+		if( endswith( argv[ i ], "vert") )
+		{
+			vertexShaderFilename = argv[ i ];
+			std::cout << "Vertex: " << argv[ i ] << std::endl;
+		}
+		if( endswith( argv[ i ], "frag" ) )
+		{
+			fragmentShaderFilename = argv[ i ];
+			std::cout << "Fragment: " << argv[ i ] << std::endl;
+		}
+		if( endswith( argv[ i ], "jpg") )
+		{
+			texturename = argv[ i ];
+			std::cout << "Texture: " << argv[ i ] << std::endl;
+		}
+	}
+
+	//Vertex shader loading
+	std::string vertexShaderFileContent;
+	getFileContent(vertexShaderFilename, vertexShaderFileContent);
+	vertexShaderSource = vertexShaderFileContent.c_str();
+
+	//Fragment shader loading
+	std::string fragmentShaderFileContent;
+	getFileContent(fragmentShaderFilename, fragmentShaderFileContent);
+	fragmentShaderSource = fragmentShaderFileContent.c_str();
 
 	// Initialize the GLUT library
 	glutInit( &argc, argv );
 
-		// - configure the main framebuffer to store rgba colors,
-		//   and activate double buffering (for fluid/smooth visualization)
-		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+	// - configure the main framebuffer to store rgba colors,
+	//   and activate double buffering (for fluid/smooth visualization)
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	// - window size and position
 	glutInitWindowSize( 1920, 1080 );
 	glutInitWindowPosition( 50, 50 );
