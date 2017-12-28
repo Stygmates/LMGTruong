@@ -1,7 +1,12 @@
 #ifndef __MY3DMODEL_HPP
 #define __MY3DMODEL_HPP
 #include <GL/gl.h>
+#ifndef LOADER
 #include "MeshLoader.hpp"
+#endif
+#ifdef LOADER
+#include "Loader.hpp"
+#endif
 #include "Texture.hpp"
 
 class My3DModel{

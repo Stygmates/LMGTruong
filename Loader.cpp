@@ -8,6 +8,10 @@
 #include <cassert>
 #include <fstream>
 
+Loader::Loader()
+{
+}
+
 void Loader::import( std::string filename )
 {
     this->importer = new Assimp::Importer();
@@ -73,79 +77,4 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     indexesdebug.close();
     #endif
 }
-
-
-// void Loader::normalize( std::vector< std::vector< glm::vec3 > >& positions )
-// {
-//     #ifdef DEBUG
-//     std::ofstream normalizeddebug;
-//     normalizeddebug.open("debug/normalized.txt");
-//     normalizeddebug << "Nombre de sommets: " << positions[0].size() << std::endl;
-//     #endif
-//     float minx, miny, minz;
-//     float maxx, maxy, maxz;
-//     assert( positions.size() > 0 );
-//     minx = positions[0][0].x;
-//     maxx = positions[0][0].x;
-//     miny = positions[0][0].y;
-//     maxy = positions[0][0].y;
-//     minz = positions[0][0].z;
-//     maxz = positions[0][0].z;
-//     std::vector< std::vector< glm::vec3 > >::iterator it;
-// 	for( it = positions.begin(); it != positions.end(); ++it )
-// 	{
-// 		std::vector< glm::vec3 >::iterator it2;
-// 		for( it2 = it->begin(); it2 != it->end(); ++it2 )
-// 		{
-//             if( minx > it2->x )
-//                 minx = it2->x;
-//             if( miny > it2->y )
-//                 miny = it2->y;
-//             if( minz > it2->z )
-//                 minz = it2->z;
-//             if( maxx < it2->x )
-//                 maxx = it2->x;
-//             if( maxy < it2->y )
-//                 maxy = it2->y;
-//             if( maxz < it2->z )
-//                 maxz = it2->z;
-// 		}
-// 	}
-//     if( minx == maxx )
-//     {
-//         std::cout << "xxx" << minx << std::endl;
-//         maxx = 1;
-//         minx = 0;
-//     }
-//     if( miny == maxy )
-//     {
-//         std::cout << "yyy" << miny << std::endl;
-//         maxy = 1;
-//         miny = 0;
-//     }
-//     if( minz == maxz )
-//     {
-//         std::cout << "zzz" << minz << std::endl;
-//         maxz = 1;
-//         minz = 0;
-//     }
-//     int j = 0;
-//     for( it = positions.begin(); it != positions.end(); ++it )
-// 	{
-// 		std::vector< glm::vec3 >::iterator it2;
-// 		for( it2 = it->begin(); it2 != it->end(); ++it2 )
-//         {
-//             it2->x = ( it2->x - minx ) / ( maxx - minx);
-//             it2->x = ( it2->x * 2 ) - 1;
-//             it2->y = ( it2->y - miny ) / ( maxy - miny);
-//             it2->y = ( it2->y * 2 ) - 1;
-//             it2->z = ( it2->z - minz ) / ( maxz - minz);
-//             it2->z = ( it2->z * 2 ) - 1;
-//             #ifdef DEBUG
-//             normalizeddebug << "\tSommet " << j << ": " << it2->x << ", " << it2->y << ", " << it2->z << std::endl;
-//             #endif
-//             j++;
-//         }
-// 	}
-// }
 

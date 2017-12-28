@@ -430,7 +430,7 @@ void display( void )
 	glBindTexture(GL_TEXTURE_2D, model.texture->texture);
 
 	// Draw the triangles !
-	glDrawElements(GL_TRIANGLE_STRIP, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
+	glDrawElements(GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
 
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );

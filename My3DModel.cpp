@@ -1,4 +1,9 @@
+#ifndef LOADER
 #include "MeshLoader.hpp"
+#endif
+#ifdef LOADER
+#include "Loader.hpp"
+#endif
 #include <GL/glew.h>
 //Use std::cout and std::endl
 #include <iostream>
@@ -21,7 +26,9 @@ bool My3DModel::loadModel(std::string filename)
 	Loader *loader = new Loader();
 	loader->import( filename );
 	loader->loadData( this->positions , this->indexes, this->texCoords );
+	#ifdef NORM
 	this->normalize(this->positions);
+	#endif
 	this->initializeVertexBuffer();
 	this->initializeIndexesBuffer();
 	this->initializeVertexArray();
