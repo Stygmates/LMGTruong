@@ -409,15 +409,9 @@ void display( void )
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glUseProgram( programID );
 
-	float r1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	float r2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-	float r3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-
 	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
 	if( uniformLocation >= 0 )
-		glUniform3f(uniformLocation, r1, r2, r3);
-		//glUniform3f(uniformLocation, 1.f, 0.f, 0.f);
-	std::cout << r1 << ", " << r2 << ", " << r3 << std::endl;
+		glUniform3f(uniformLocation, 0.f, 0.f, 1.f);
 
 	uniformLocation = glGetUniformLocation( programID, "meshTexture");
 	if (uniformLocation >= 0)

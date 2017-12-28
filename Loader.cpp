@@ -67,7 +67,7 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
                 }
             }
         }
-        //normalize( positions );
+        normalize( positions );
     }
     #ifdef DEBUG
     verticesdebug.close();
