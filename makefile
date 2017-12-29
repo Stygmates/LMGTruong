@@ -18,6 +18,11 @@ ifeq ($(NORM), 1)
 	NFLAGS = -DNORM
 endif
 
+LINES ?= 0
+ifeq ($(LINES), 1)
+	LFLAG2 = -DLINES
+endif
+
 CC = g++
 LDFLAGS = -lGL -lglut -lGLEW -Iglm -lSOIL -lassimp -Iassimp -I /usr/include/SOIL
 EXEC = main
@@ -26,7 +31,7 @@ OBJ = $(SRC:.c=.o)
 all: clean main
 
 main: $(OBJ) $(LOADER) My3DModel.o Texture.o
-	$(CC) $(CFLAGS) $(NFLAGS) -std=c++11 -o $(EXEC) exo1.cpp $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(NFLAGS) $(LFLAG2) -std=c++11 -o $(EXEC) exo1.cpp $^ $(LDFLAGS)
 
 Loader.o: Loader.cpp Loader.hpp
 	$(CC) $(CFLAGS) -g -c $<
