@@ -27,6 +27,15 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     verticesdebug.open("debug/vertices.txt");
     std::ofstream indexesdebug;
     indexesdebug.open("debug/indexes.txt");
+    std::ofstream objinfodebug;
+    objinfodebug.open("debug/infos.txt");
+    objinfodebug << "Nombres d'animations: " << this->scene->mNumAnimations << std::endl;
+    objinfodebug << "Nombres de cameras: " << this->scene->mNumCameras << std::endl;
+    objinfodebug << "Nombres de lumieres: " << this->scene->mNumLights << std::endl;
+    objinfodebug << "Nombres de matériaux: " << this->scene->mNumMaterials << std::endl;
+    objinfodebug << "Nombres de meshes: " << this->scene->mNumMeshes << std::endl;
+    objinfodebug << "Nombres de textures: " << this->scene->mNumTextures << std::endl;
+    objinfodebug.close();
     #endif
     if( this->scene->HasMeshes() )
     {

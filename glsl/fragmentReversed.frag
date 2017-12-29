@@ -15,6 +15,6 @@ out vec4 fragmentColor;
 // MAIN
 void main( void )
 {
-    fragmentColor = texture( meshTexture, vec2(uv.s, 1.0 - uv.t ) );
-    //fragmentColor = texture( meshTexture, uv );
+    //fragmentColor = texture( meshTexture, vec2(uv.s, 1.0 - uv.t ) );
+    fragmentColor = texture( meshTexture, uv );
 }
