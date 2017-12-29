@@ -26,6 +26,7 @@
 #include <GL/glut.h>
 
 #include "My3DModel.hpp"
+#include "Shader.hpp"
 
 	/******************************************************************************
  ****************************** NAMESPACE SECTION *****************************
@@ -119,7 +120,8 @@ const char *fragmentShaderSource;
 My3DModel model;
 
 // Program id
-GLuint programID ;
+Shader *shader;
+GLuint programID;
 
 //Path to the obj
 std::string objname;
@@ -142,32 +144,7 @@ bool initializeShaderProgram();
 bool finalize();
 
 
-/******************************************************************************
- * Errors check
- ******************************************************************************/
 
-bool checkShader( GLuint shader )
-{
-	// Check compilation status
-	GLint compileStatus;
-	glGetShaderiv( shader, GL_COMPILE_STATUS, &compileStatus );
-	if ( compileStatus == GL_FALSE )
-	{
-		GLint logInfoLength = 0;
-		glGetShaderiv( shader, GL_INFO_LOG_LENGTH, &logInfoLength );
-		if ( logInfoLength > 0 )
-		{
-			// Return information log for shader object
-			GLchar* infoLog = new GLchar[ logInfoLength ];
-			GLsizei length = 0;
-			glGetShaderInfoLog( shader, logInfoLength, &length, infoLog );
-			// LOG
-			std::cout << infoLog << std::endl;
-		}
-		return false;
-	}
-	return true;
-}
 
 /*bool checkShaderLinking( GLuint programID )
 {
@@ -318,37 +295,7 @@ bool initializeVertexArray()
 	return statusOK;
 }
 
-/******************************************************************************
- * Helper function used to load shader source code from files
- *
- * @param pFilename ...
- *
- * @return ...
- ******************************************************************************/
-bool getFileContent(const std::string &pFilename, std::string &pFileContent)
-{
-	std::ifstream file(pFilename.c_str(), std::ios::in);
-	if (file)
-	{
-		// Initialize a string to store file content
-		file.seekg(0, std::ios::end);
-		pFileContent.resize(file.tellg());
-		file.seekg(0, std::ios::beg);
 
-		// Read file content
-		file.read(&pFileContent[0], pFileContent.size());
-
-		// Close file
-		file.close();
-
-		return true;
-	}
-	else
-	{
-		std::cerr << "Ouverture du fichier " << pFilename << " impossible." << std::endl;
-		return false;
-	}
-}
 
 bool endswith(const std::string &str, const std::string &suffix)
 {
@@ -365,28 +312,6 @@ bool initializeShaderProgram()
 
 	std::cout << "Initialize shader program..." << std::endl;
 	//Create the ids of the shaders
-	GLuint vertexShaderID = glCreateShader( GL_VERTEX_SHADER );
-	GLuint fragmentShaderID = glCreateShader( GL_FRAGMENT_SHADER );
-	//
-	glShaderSource( vertexShaderID, 1, &vertexShaderSource, nullptr );
-	glShaderSource( fragmentShaderID, 1, &fragmentShaderSource, nullptr );
-	
-	//Compile the shaders
-	glCompileShader( vertexShaderID );
-	if( !checkShader( vertexShaderID ) )
-		return false;
-
-	glCompileShader( fragmentShaderID );
-	if( !checkShader( fragmentShaderID ) )
-		return false;
-
-	//Create the program
-	programID = glCreateProgram();
-	//Attach the shades to the program
-	glAttachShader( programID, vertexShaderID );
-	glAttachShader( programID, fragmentShaderID );
-	//Link the program
-	glLinkProgram( programID );
 
 	return statusOK;
 }
@@ -414,13 +339,13 @@ void display( void )
 	glEnable(GL_CULL_FACE);
 	// - clear the "color" framebuffer
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	glUseProgram( programID );
+	glUseProgram( shader->programID );
 
-	GLint uniformLocation = glGetUniformLocation( programID, "meshColor");
+	GLint uniformLocation = glGetUniformLocation( shader->programID, "meshColor");
 	if( uniformLocation >= 0 )
 		glUniform3f(uniformLocation, 0.f, 0.f, 1.f);
 
-	uniformLocation = glGetUniformLocation( programID, "meshTexture");
+	uniformLocation = glGetUniformLocation( shader->programID, "meshTexture");
 	if (uniformLocation >= 0)
 		glUniform1i(uniformLocation, 0); // 0 pour GL_TEXTURE0
 
@@ -490,7 +415,8 @@ int main( int argc, char** argv )
 			std::cout << "Texture: " << argv[ i ] << std::endl;
 		}
 	}
-
+	shader = new Shader( vertexShaderFilename, fragmentShaderFilename );
+	/*
 	//Vertex shader loading
 	std::string vertexShaderFileContent;
 	getFileContent(vertexShaderFilename, vertexShaderFileContent);
@@ -500,6 +426,7 @@ int main( int argc, char** argv )
 	std::string fragmentShaderFileContent;
 	getFileContent(fragmentShaderFilename, fragmentShaderFileContent);
 	fragmentShaderSource = fragmentShaderFileContent.c_str();
+	*/
 
 	// Initialize the GLUT library
 	glutInit( &argc, argv );
@@ -527,6 +454,8 @@ int main( int argc, char** argv )
 		fprintf( stderr, "Error: %s\n", glewGetErrorString( error ) );
 		exit( -1 );
 	}
+
+	shader->init();
 
 	// Initialize all your resources (graphics, data, etc...)
 	initialize();

@@ -30,8 +30,11 @@ OBJ = $(SRC:.c=.o)
 
 all: clean main
 
-main: $(OBJ) $(LOADER) My3DModel.o Texture.o
+main: $(OBJ) $(LOADER) My3DModel.o Texture.o Shader.o
 	$(CC) $(CFLAGS) $(NFLAGS) $(LFLAG2) -std=c++11 -o $(EXEC) exo1.cpp $^ $(LDFLAGS)
+
+main.o:
+	$(CC) $(CFLAGS) -std=c++11 -o main.o main.cpp $(LDFLAGS)
 
 Loader.o: Loader.cpp Loader.hpp
 	$(CC) $(CFLAGS) -g -c $<
@@ -45,8 +48,8 @@ Texture.o: Texture.cpp Texture.hpp
 MeshLoader.o: MeshLoader.cpp MeshLoader.hpp
 	$(CC) $(CFLAGS) -std=c++11 -g -c $<
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -g -c $< 
+%.o: %.cpp %.hpp
+	$(CC) $(CFLAGS) -std=c++11 -g -c $< $(LDFLAGS)
 
 .PHONY: clean
 clean:
