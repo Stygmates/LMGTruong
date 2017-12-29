@@ -30,9 +30,9 @@ bool My3DModel::loadModel(std::string filename)
 	this->normalize(this->positions);
 	#endif
 	this->initializeVertexBuffer();
+	this->initializeTexturesBuffer();
 	this->initializeIndexesBuffer();
 	this->initializeVertexArray();
-	this->initializeTexturesBuffer();
 	return statusOK;
 }
 
@@ -145,6 +145,20 @@ bool My3DModel::initializeVertexBuffer()
 	return statusOK;
 }
 
+bool My3DModel::initializeTexturesBuffer()
+{
+	bool statusOK = true;
+	//Generate its id
+	glGenBuffers(1, &this->textureID);
+	//Bind vbo as current vbo
+	glBindBuffer(GL_ARRAY_BUFFER, this->textureID);
+	//Send data from CPU to GPU
+	glBufferData(GL_ARRAY_BUFFER, this->texCoords.size() * sizeof( glm::vec2 ), this->texCoords.data(), GL_STATIC_DRAW);
+	//Unbind buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	return statusOK;
+}
+
 bool My3DModel::initializeIndexesBuffer()
 {
 	bool statusOK = true;
@@ -156,24 +170,10 @@ bool My3DModel::initializeIndexesBuffer()
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->indexID );
     // definit la taille du buffer et le remplit
 	int	numberOfIndices_ = static_cast< int >( this->indexes.size() );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, numberOfIndices_ * sizeof( GLuint ), this->indexes.data(), GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, numberOfIndices_ * sizeof( unsigned int ), this->indexes.data(), GL_STATIC_DRAW );
     // buffer courant : rien
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-	return statusOK;
-}
-
-bool My3DModel::initializeTexturesBuffer()
-{
-	bool statusOK = true;
-	//Generate its id
-	glGenBuffers(1, &this->textureID);
-	//Bind vbo as current vbo
-	glBindBuffer(GL_TEXTURE_BUFFER, this->textureID);
-	//Send data from CPU to GPU
-	glBufferData(GL_TEXTURE_BUFFER, this->texCoords.size() * sizeof( glm::vec2 ), this->texCoords.data(), GL_STATIC_DRAW);
-	//Unbind buffer
-	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 	return statusOK;
 }
 
@@ -193,19 +193,19 @@ bool My3DModel::initializeVertexArray()
 	// - enable or disable a generic vertex attribute array
 	glEnableVertexAttribArray( 0/*index of the generic vertex attribute*/ );
 
+	//vbo pour la texture
+	glBindBuffer( GL_ARRAY_BUFFER, this->textureID );
+	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+	glEnableVertexAttribArray(1 /*index of the generic vertex attribute*/);
+
 	//vbo pour les faces
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->indexID );
 
-	//vbo pour la texture
-	glBindBuffer( GL_TEXTURE_BUFFER, this->textureID );
-	glVertexAttribPointer( 1, 2, GL_FLOAT, GL_FALSE, 0, 0 );
-	glEnableVertexAttribArray(1 /*index of the generic vertex attribute*/);
 	//Unbind vao
 	glBindVertexArray( 0 );
 	// Unbind vbo
-	glBindBuffer( GL_ARRAY_BUFFER, 0 );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-	glBindBuffer( GL_TEXTURE_BUFFER, 0 );
+	//glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	//glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
 	return statusOK;
 }

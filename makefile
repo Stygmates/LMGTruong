@@ -23,7 +23,9 @@ LDFLAGS = -lGL -lglut -lGLEW -Iglm -lSOIL -lassimp -Iassimp -I /usr/include/SOIL
 EXEC = main
 OBJ = $(SRC:.c=.o)
 
-all: $(OBJ) $(LOADER) My3DModel.o Texture.o
+all: clean main
+
+main: $(OBJ) $(LOADER) My3DModel.o Texture.o
 	$(CC) $(CFLAGS) $(NFLAGS) -std=c++11 -o $(EXEC) exo1.cpp $^ $(LDFLAGS)
 
 Loader.o: Loader.cpp Loader.hpp
@@ -41,5 +43,6 @@ MeshLoader.o: MeshLoader.cpp MeshLoader.hpp
 %.o: %.c %.h
 	$(CC) $(CFLAGS) -g -c $< 
 
+.PHONY: clean
 clean:
 	/bin/rm -f $(EXEC) *.o debug/*

@@ -196,7 +196,7 @@ void Loader::loadData(std::vector<glm::vec3> &positions, std::vector<unsigned in
 							{
 								if ( !value[1].empty() )
 								{
-									unsigned int val2 = stoul(value[1]) - 1;
+									unsigned int val2 = stoul( value[ 1 ] ) - 1;
 									texture.push_back( val2 );
 								}
 							}

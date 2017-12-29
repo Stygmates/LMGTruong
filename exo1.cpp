@@ -405,6 +405,13 @@ void display( void )
 	// - color used to clear
 	glClearColor( 0.f, 0.f, 0.f, 0.f );
 	glClearDepth( 1.f );
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS); 
+
+	// Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
 	// - clear the "color" framebuffer
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glUseProgram( programID );
@@ -431,7 +438,6 @@ void display( void )
 
 	// Draw the triangles !
 	glDrawElements(GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
-
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
 
@@ -473,7 +479,7 @@ int main( int argc, char** argv )
 			fragmentShaderFilename = argv[ i ];
 			std::cout << "Fragment: " << argv[ i ] << std::endl;
 		}
-		if( endswith( argv[ i ], "jpg") )
+		if( endswith( argv[ i ], "jpg") || endswith( argv[ i ], "png" ) || endswith( argv[ i ], "PNG" ) )
 		{
 			texturename = argv[ i ];
 			std::cout << "Texture: " << argv[ i ] << std::endl;
