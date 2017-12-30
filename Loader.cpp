@@ -35,7 +35,8 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     objinfodebug << "Nombres de matériaux: " << this->scene->mNumMaterials << std::endl;
     objinfodebug << "Nombres de meshes: " << this->scene->mNumMeshes << std::endl;
     objinfodebug << "Nombres de textures: " << this->scene->mNumTextures << std::endl;
-    objinfodebug.close();
+    std::ofstream texturesdebug;
+    texturesdebug.open("debug/textures.txt");
     #endif
     if( this->scene->HasMeshes() )
     {
@@ -48,6 +49,7 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
             //verticesdebug << "Chargement de " << mesh->mName.C_Str() << std::endl << "Nombre de sommets: " << mesh->mNumVertices << std::endl;
             verticesdebug << "Nombre de sommets: " << mesh->mNumVertices << std::endl;
             indexesdebug << "Chargement de " << mesh->mName.C_Str() << std::endl << "Nombre de faces: " << mesh->mNumFaces << std::endl;
+            objinfodebug << "Mesh nommé " <<mesh->mName.C_Str() << std::endl;
             #endif
             for( unsigned int j = 0; j < mesh->mNumVertices; j++ )
             {
@@ -61,14 +63,16 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
             for( unsigned int j = 0; j < mesh->mNumFaces; j++ )
             {
                 const aiFace& face = mesh->mFaces[ j ]; 
-                assert( face.mNumIndices == 3 );
-                faces.push_back( face.mIndices[ 0 ] );
-                faces.push_back( face.mIndices[ 1 ] );
-                faces.push_back( face.mIndices[ 2 ] );
-                #ifdef DEBUG
-                indexesdebug << "\tFace " << j << ": " << face.mIndices[ 0 ] << ", " << face.mIndices[ 1 ] << ", " << face.mIndices[ 2 ] << std::endl;
-                //indexesdebug << face.mIndices[ 0 ] << std::endl << face.mIndices[ 1 ] << std::endl << face.mIndices[ 2 ] << std::endl;
-                #endif
+                if( face.mNumIndices == 3 )
+                {
+                    faces.push_back( face.mIndices[ 0 ] );
+                    faces.push_back( face.mIndices[ 1 ] );
+                    faces.push_back( face.mIndices[ 2 ] );
+                    #ifdef DEBUG
+                    indexesdebug << "\tFace " << j << ": " << face.mIndices[ 0 ] << ", " << face.mIndices[ 1 ] << ", " << face.mIndices[ 2 ] << std::endl;
+                    //indexesdebug << face.mIndices[ 0 ] << std::endl << face.mIndices[ 1 ] << std::endl << face.mIndices[ 2 ] << std::endl;
+                    #endif
+                }
             }
             if( mesh->HasTextureCoords( 0 ) )
             {
@@ -77,6 +81,9 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
                 {
                     const aiVector3D& texCoord = mesh->mTextureCoords[ 0 ][ j ];
                     texCoords[ j ] = glm::vec2(texCoord.x, texCoord.y );
+                    #ifdef DEBUG
+                    texturesdebug << texCoord.x << ", " << texCoord.y << std::endl;
+                    #endif
                 }
             }
         }
@@ -84,6 +91,8 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     #ifdef DEBUG
     verticesdebug.close();
     indexesdebug.close();
+    texturesdebug.close();
+    objinfodebug.close();
     #endif
 }
 

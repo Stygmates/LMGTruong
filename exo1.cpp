@@ -363,7 +363,7 @@ void display( void )
 
 	// Draw the triangles !
 	#ifdef LINES
-	glDrawElements(GL_LINES, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
+	glDrawElements(GL_POINTS, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
 	std::cout << "Lines" << std::endl;
 	#else
 	glDrawElements(GL_TRIANGLES, model.indexes.size(), GL_UNSIGNED_INT, (void *)0);
