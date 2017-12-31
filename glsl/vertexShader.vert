@@ -17,7 +17,7 @@ out vec2 uv;
 void main( void )
 {
 	// Send position to Clip-space
-	//gl_Position = vec4( position, 1.0 );
+	gl_Position = vec4( position, 1.0 );
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 );
 	uv = textureCoordinate;
 }
