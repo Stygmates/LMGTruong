@@ -1,7 +1,6 @@
-Dépendances:
-    - sudo apt-get install libboost-all-dev
+Pour installer les dépendances:
+make install
 
-Shader init après glewinit()
-
+Pour compiler:
 make
-./main.o earth/earth.obj earth/4096_earth.jpg glsl/vertexShader.vert glsl/fragmentShader.frag
+./main.o
