@@ -360,10 +360,10 @@ bool initializeCubemapShader()
 
 	// Vertex shader
 	const char* vertexShaderSource[] = {
-	    "#version 320 es                                                       \n"
+	    "#version 130                                                       \n"
 		"precision mediump float;                                              \n"
 		"// INPUT                                                              \n"
-		"layout (location = 0) in vec3 position;                               \n"
+		"in vec3 position;			                               \n"
 		"                                                                      \n"
 		"// UNIFORM                                                            \n"
 		"uniform mat4 uModelViewProjectionMatrix;                              \n"
@@ -382,7 +382,7 @@ bool initializeCubemapShader()
 
 	// Fragment shader
 	const char *fragmentShaderSource[] = {
-		"#version 320 es                                                    \n"
+		"#version 130                                                    \n"
 		"precision mediump float;                                           \n"
 		"// INPUT                                                           \n"
 		"in vec3 pos;														\n"
@@ -390,7 +390,7 @@ bool initializeCubemapShader()
 		"// UNIFORM                                                         \n"
 		"uniform samplerCube skybox;                                        \n"
 		"// OUTPUT                                                          \n"
-		"layout (location = 0) out vec4 fragmentColor;                      \n"
+		"out vec4 fragmentColor;			                    \n"
 		"                                                                   \n"
 		"// MAIN                                                            \n"
 		"void main( void )                                                  \n"

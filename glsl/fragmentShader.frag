@@ -1,4 +1,4 @@
-#version 320 es
+#version 130
 precision mediump float;
 
 // INPUT
