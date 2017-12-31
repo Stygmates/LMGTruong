@@ -1156,10 +1156,10 @@ int main( int argc, char** argv )
 	dataRepository = get_current_dir_name();
 	std::cout << "Data Repository: " << dataRepository << std::endl;
 
-	objname = "obj/cube.obj";
-	texturename = "textures/myImage.jpg";
-	std::string vertexShaderFilename = "glsl/vertexInitial.vert";
-	std::string fragmentShaderFilename = "glsl/fragmentInitial.frag";
+	objname = "earth/earth.obj";
+	texturename = "earth/4096_earth.jpg";
+	std::string vertexShaderFilename = "glsl/vertexShader.vert";
+	std::string fragmentShaderFilename = "glsl/fragmentShader.frag";
 
 	for (int i = 1; i < argc; i++)
 	{
