@@ -10,4 +10,4 @@ sudo apt-get install libsoil-dev
 
 sudo apt-get install freeglut3-dev
 
-#sudo apt-get install libboost-all-dev
+sudo apt-get install libboost-all-dev
