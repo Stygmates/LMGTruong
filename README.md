@@ -3,5 +3,5 @@ make install
 
 Pour compiler:
 make
-Pour lancer:
+Pour lancer:\n
 ./main.o
