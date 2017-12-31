@@ -1,7 +1,7 @@
 Pour installer les dépendances:
-make install
+"make install"
 
 Pour compiler:
-make
-Pour lancer:\n
-./main.o
+"make"
+Pour lancer:
+"./main.o"
