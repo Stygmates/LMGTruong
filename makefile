@@ -7,10 +7,11 @@ endif
 
 LD ?= 1
 ifeq ($(LD), 1)
+
+	LOADER = MeshLoader.o
+else
 	LOADER = Loader.o
 	LFLAG = -DLOADER
-else
-	LOADER = MeshLoader.o
 endif
 
 NORM ?= 1
@@ -33,7 +34,7 @@ all: clean main main.o
 main: $(OBJ) $(LOADER) My3DModel.o Texture.o Shader.o
 	$(CC) $(CFLAGS) $(NFLAGS) $(LFLAG2) -std=c++11 -o $(EXEC) exo1.cpp $^ $(LDFLAGS)
 
-main.o: Loader.o My3DModel.o Texture.o Shader.o
+main.o: $(LOADER) My3DModel.o Texture.o Shader.o
 	$(CC) $(CFLAGS) -std=c++11 -o main.o main.cpp $^ $(LDFLAGS)
 
 Loader.o: Loader.cpp Loader.hpp
