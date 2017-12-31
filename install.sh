@@ -6,4 +6,6 @@ sudo apt-get install libglm-dev
 
 sudo apt-get install libglew-dev
 
+sudo apt-get install libsoil-dev
+
 #sudo apt-get install libboost-all-dev
