@@ -22,3 +22,5 @@ Pour lancer le programme:
 
 "./main.o" suivi des fichiers correspondants, on supposera que les fichiers sont au format correspondant: .obj pour les objets, .vert pour les vertex shaders, .frag pour les fragment shaders, .jpg pour les textures. Si aucun fichier n'est spécifié pour n'importe laquelle de ces entrées, une entrée par défaut à été définie, on peut donc lancer "./main" sans aucun argument ou avec un nombre variable d'arguments.
 Si plusieurs fichiers au format correspondant sont transmis, on utilisera le dernier donné.
+
+On peut bouger la caméra avec ZQSD et zqsd.
