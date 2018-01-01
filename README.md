@@ -10,7 +10,7 @@ On peut utiliser plusieurs options indépendantes lors de la commande make:
 
 LD=1 pour utiliser le loader fait à la main, la texture est buguée.
 
-NORM=0 pour désactiver la normalisation des sommets de l'objet, il ne sera donc pas centré à a une taille convenable pour la caméra.
+NORM=0 pour désactiver la normalisation des sommets de l'objet, il ne sera donc pas centré et à une taille convenable pour la caméra.
 
 DEBUG=0 pour désactiver les logs dans le dossier debug
 
