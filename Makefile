@@ -52,9 +52,9 @@ MeshLoader.o: MeshLoader.cpp MeshLoader.hpp
 %.o: %.cpp %.hpp
 	$(CC) $(CFLAGS) -std=c++11 -g -c $< $(LDFLAGS)
 
-.PHONY: clean install
+.PHONY: clean lib-deps
 
-install:
+lib-deps:
 	chmod u+x install.sh
 	./install.sh
 clean:

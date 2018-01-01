@@ -1,6 +1,6 @@
 Pour installer les dépendances:
 
-"make install"
+"make lib-deps"
 
 Pour compiler:
 
