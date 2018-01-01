@@ -24,3 +24,5 @@ Pour lancer le programme:
 Si plusieurs fichiers au format correspondant sont transmis, on utilisera le dernier donné.
 
 On peut bouger la caméra avec ZQSD et zqsd.
+
+On peut désactiver/activer la rotation de l'objet avec la touche p.
