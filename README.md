@@ -1,3 +1,4 @@
+![Screenshot](lmg/lmg1.png)
 Pour installer les dépendances:
 
 "make lib-deps"
