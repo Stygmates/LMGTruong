@@ -1016,6 +1016,7 @@ void display( void )
 	// Set GL state(s) (fixed pipeline)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	
+	/*
 	// - bind VAO as current vertex array (in OpenGL state machine)
 	glBindVertexArray( vertexArray );
 	// - draw command
@@ -1027,7 +1028,7 @@ void display( void )
     );
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
-	
+	*/
 	// Reset GL state(s) (fixed pipeline)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
@@ -1178,7 +1179,7 @@ int main( int argc, char** argv )
 			fragmentShaderFilename = argv[i];
 			std::cout << "Fragment: " << argv[i] << std::endl;
 		}
-		if (endswith(argv[i], "jpg") || endswith(argv[i], "png") || endswith(argv[i], "PNG"))
+		if (endswith(argv[i], "jpg") || endswith(argv[i], "png") || endswith(argv[i], "PNG") || endswith(argv[i], "tga"))
 		{
 			texturename = argv[i];
 			std::cout << "Texture: " << argv[i] << std::endl;
