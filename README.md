@@ -1,4 +1,23 @@
+<center><h1> Rapport projet LMG </h1></center>
+<center><h3>Truong Tan Dat</h3></center>
+<center><h3>ISI</h3></center>
+
+
+<h3>Liste des fonctionnalités</h3>
+- Chargement d'un objet et texture:
+
 ![Screenshot](lmg/lmg1.png)
+On peut choisir la l'objet, la texture, ainsi que les shader à utiliser.
+![Screenshot](lmg/lmg3.png)
+![Screenshot](lmg/lmg4.png)
+![Screenshot](lmg/lmg5.png)
+
+On peut également bouger la caméra autour de l'objet.
+![Screenshot](lmg/lmg2.png)
+
+
+
+<center><h3>Environnement utilisé et dépendances</h3></center>
 Pour installer les dépendances:
 
 "make lib-deps"
