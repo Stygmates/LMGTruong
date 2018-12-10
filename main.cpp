@@ -1109,25 +1109,25 @@ void keyboard( unsigned char key, int x, int y)
 {
 	switch(key)
 	{
-		case 'z':
+		case 'w':
 			_cameraEye = _cameraEye + glm::vec3(0.f, 0.f, -0.1f);
 			break;
 		case 's':
 			_cameraEye = _cameraEye + glm::vec3(0.f, 0.f, 0.1f);
 			break;
-		case 'q':
+		case 'a':
 			_cameraEye = _cameraEye + glm::vec3(-0.1f, 0.f, 0.f);
 			break;
 		case 'd':
 			_cameraEye = _cameraEye + glm::vec3(0.1f, 0.f, 0.f);
 			break;
-		case 'Z':
+		case 'W':
 			_cameraEye = _cameraEye + glm::vec3(0.f, 0.1f, 0.f);
 			break;
 		case 'S':
 			_cameraEye = _cameraEye + glm::vec3(0.f, -0.1f, 0.f);
 			break;
-		case 'Q':
+		case 'A':
 			_cameraEye = glm::rotate(_cameraEye, pan, _cameraUp);
 
 			// pan = pan - 0.1f;
