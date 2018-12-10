@@ -360,10 +360,10 @@ bool initializeCubemapShader()
 
 	// Vertex shader
 	const char* vertexShaderSource[] = {
-	    "#version 320 es                                                       \n"
+	    "#version 130                                                       \n"
 		"precision mediump float;                                              \n"
 		"// INPUT                                                              \n"
-		"layout (location = 0) in vec3 position;                               \n"
+		"in vec3 position;			                               \n"
 		"                                                                      \n"
 		"// UNIFORM                                                            \n"
 		"uniform mat4 uModelViewProjectionMatrix;                              \n"
@@ -382,7 +382,7 @@ bool initializeCubemapShader()
 
 	// Fragment shader
 	const char *fragmentShaderSource[] = {
-		"#version 320 es                                                    \n"
+		"#version 130                                                    \n"
 		"precision mediump float;                                           \n"
 		"// INPUT                                                           \n"
 		"in vec3 pos;														\n"
@@ -390,7 +390,7 @@ bool initializeCubemapShader()
 		"// UNIFORM                                                         \n"
 		"uniform samplerCube skybox;                                        \n"
 		"// OUTPUT                                                          \n"
-		"layout (location = 0) out vec4 fragmentColor;                      \n"
+		"out vec4 fragmentColor;			                    \n"
 		"                                                                   \n"
 		"// MAIN                                                            \n"
 		"void main( void )                                                  \n"
@@ -1016,6 +1016,7 @@ void display( void )
 	// Set GL state(s) (fixed pipeline)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	
+	/*
 	// - bind VAO as current vertex array (in OpenGL state machine)
 	glBindVertexArray( vertexArray );
 	// - draw command
@@ -1027,7 +1028,7 @@ void display( void )
     );
 	// - unbind VAO (0 is the default resource ID in OpenGL)
 	glBindVertexArray( 0 );
-	
+	*/
 	// Reset GL state(s) (fixed pipeline)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
@@ -1156,10 +1157,10 @@ int main( int argc, char** argv )
 	dataRepository = get_current_dir_name();
 	std::cout << "Data Repository: " << dataRepository << std::endl;
 
-	objname = "obj/cube.obj";
-	texturename = "textures/myImage.jpg";
-	std::string vertexShaderFilename = "glsl/vertexInitial.vert";
-	std::string fragmentShaderFilename = "glsl/fragmentInitial.frag";
+	objname = "earth/earth.obj";
+	texturename = "earth/4096_earth.jpg";
+	std::string vertexShaderFilename = "glsl/vertexShader.vert";
+	std::string fragmentShaderFilename = "glsl/fragmentShader.frag";
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -1178,7 +1179,7 @@ int main( int argc, char** argv )
 			fragmentShaderFilename = argv[i];
 			std::cout << "Fragment: " << argv[i] << std::endl;
 		}
-		if (endswith(argv[i], "jpg") || endswith(argv[i], "png") || endswith(argv[i], "PNG"))
+		if (endswith(argv[i], "jpg") || endswith(argv[i], "png") || endswith(argv[i], "PNG") || endswith(argv[i], "tga"))
 		{
 			texturename = argv[i];
 			std::cout << "Texture: " << argv[i] << std::endl;
