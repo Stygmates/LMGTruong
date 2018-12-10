@@ -29,12 +29,12 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     indexesdebug.open("debug/indexes.txt");
     std::ofstream objinfodebug;
     objinfodebug.open("debug/infos.txt");
-    objinfodebug << "Nombres d'animations: " << this->scene->mNumAnimations << std::endl;
-    objinfodebug << "Nombres de cameras: " << this->scene->mNumCameras << std::endl;
-    objinfodebug << "Nombres de lumieres: " << this->scene->mNumLights << std::endl;
-    objinfodebug << "Nombres de matériaux: " << this->scene->mNumMaterials << std::endl;
-    objinfodebug << "Nombres de meshes: " << this->scene->mNumMeshes << std::endl;
-    objinfodebug << "Nombres de textures: " << this->scene->mNumTextures << std::endl;
+    objinfodebug << "Number of Animations: " << this->scene->mNumAnimations << std::endl;
+    objinfodebug << "Number of cameras: " << this->scene->mNumCameras << std::endl;
+    objinfodebug << "Number of lights: " << this->scene->mNumLights << std::endl;
+    objinfodebug << "Number of materials: " << this->scene->mNumMaterials << std::endl;
+    objinfodebug << "Number of meshes: " << this->scene->mNumMeshes << std::endl;
+    objinfodebug << "Number of textures: " << this->scene->mNumTextures << std::endl;
     std::ofstream texturesdebug;
     texturesdebug.open("debug/textures.txt");
     #endif
@@ -47,9 +47,9 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
             //positions[ i ].resize( mesh->mNumVertices );
             #ifdef DEBUG
             //verticesdebug << "Chargement de " << mesh->mName.C_Str() << std::endl << "Nombre de sommets: " << mesh->mNumVertices << std::endl;
-            verticesdebug << "Nombre de sommets: " << mesh->mNumVertices << std::endl;
-            indexesdebug << "Chargement de " << mesh->mName.C_Str() << std::endl << "Nombre de faces: " << mesh->mNumFaces << std::endl;
-            objinfodebug << "Mesh nommé " <<mesh->mName.C_Str() << std::endl;
+            verticesdebug << "Vertices number: " << mesh->mNumVertices << std::endl;
+            indexesdebug << "Loading " << mesh->mName.C_Str() << std::endl << "Number of faces: " << mesh->mNumFaces << std::endl;
+            objinfodebug << "Mesh named " <<mesh->mName.C_Str() << std::endl;
             #endif
             for( unsigned int j = 0; j < mesh->mNumVertices; j++ )
             {
@@ -57,7 +57,7 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
                 glm::vec3 v = glm::vec3( position.x, position.y, position.z );
                 positions.push_back( v );
                 #ifdef DEBUG
-                verticesdebug << "\tSommet " << j << ": " << v.x << ", " << v.y << ", " << v.z << std::endl;
+                verticesdebug << "\tVertice " << j << ": " << v.x << ", " << v.y << ", " << v.z << std::endl;
                 #endif
             }
             for( unsigned int j = 0; j < mesh->mNumFaces; j++ )
@@ -95,4 +95,3 @@ void Loader::loadData(std::vector< glm::vec3 > &positions, std::vector< unsigned
     objinfodebug.close();
     #endif
 }
-

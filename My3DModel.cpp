@@ -41,7 +41,7 @@ void My3DModel::normalize(std::vector<glm::vec3> &positions)
 #ifdef DEBUG
 	std::ofstream normalizeddebug;
 	normalizeddebug.open("debug/normalized.txt");
-	normalizeddebug << "Nombre de sommets: " << positions.size() << std::endl;
+	normalizeddebug << "Vertices number: " << positions.size() << std::endl;
 #endif
 	float minx, miny, minz;
 	float maxx, maxy, maxz;
@@ -76,13 +76,11 @@ void My3DModel::normalize(std::vector<glm::vec3> &positions)
 	}
 	if (miny == maxy)
 	{
-		std::cout << "yyy" << miny << std::endl;
 		maxy = 1;
 		miny = 0;
 	}
 	if (minz == maxz)
 	{
-		std::cout << "zzz" << minz << std::endl;
 		maxz = 1;
 		minz = 0;
 	}
@@ -96,7 +94,7 @@ void My3DModel::normalize(std::vector<glm::vec3> &positions)
 		it->z = (it->z - minz) / (maxz - minz);
 		it->z = (it->z * 2) - 1;
 #ifdef DEBUG
-		normalizeddebug << "\tSommet " << j << ": " << it->x << ", " << it->y << ", " << it->z << std::endl;
+		normalizeddebug << "\tVertex " << j << ": " << it->x << ", " << it->y << ", " << it->z << std::endl;
 #endif
 		j++;
 	}
