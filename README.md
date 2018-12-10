@@ -1,48 +1,76 @@
-<center><h1> Rapport projet LMG </h1></center>
-<center><h3>Truong Tan Dat</h3></center>
-<center><h3>ISI</h3></center>
+# OpenGL obj displayer
 
+## Features
 
-<h3>Liste des fonctionnalités</h3>
-- Chargement d'un objet et texture:
+### Obj loading
 
 ![Screenshot](lmg/lmg1.png)
-On peut choisir la l'objet, la texture, ainsi que les shader à utiliser.
+
+### Texture loading
+
 ![Screenshot](lmg/lmg3.png)
+
+### Shader loading
+
 ![Screenshot](lmg/lmg4.png)
 ![Screenshot](lmg/lmg5.png)
 
-On peut également bouger la caméra autour de l'objet.
+### Camera movements
+
 ![Screenshot](lmg/lmg2.png)
 
 
+## Build instructions
 
-<center><h3>Environnement utilisé et dépendances</h3></center>
-Pour installer les dépendances:
+### Install the dependencies:
 
-"make lib-deps"
+```
+make lib-deps
+```
 
-Pour compiler:
+### Compile:
 
-"make"
+```
+make
+```
 
-On peut utiliser plusieurs options indépendantes lors de la commande make:
+Several options can be specified while compiling the project:
 
-LD=1 pour utiliser le loader fait à la main, la texture est buguée.
+NORM=0 to disable the obj normalization, the object may be out of the field of view.
 
-NORM=0 pour désactiver la normalisation des sommets de l'objet, il ne sera donc pas centré et à une taille convenable pour la caméra.
+DEBUG=0 to disable debug logs in the debug folder
 
-DEBUG=0 pour désactiver les logs dans le dossier debug
-
-Exemple de compilation:
+### Compilation examples
 
 "make LD=1 NORM=0"
 
-Pour lancer le programme:
+### Execute program
+```
+./main <obj> <vert> <frag> <text>
+```
 
-"./main" suivi des fichiers correspondants, on supposera que les fichiers sont au format correspondant: .obj pour les objets, .vert pour les vertex shaders, .frag pour les fragment shaders, .jpg pour les textures. Si aucun fichier n'est spécifié pour n'importe laquelle de ces entrées, une entrée par défaut à été définie, on peut donc lancer "./main" sans aucun argument ou avec un nombre variable d'arguments.
-Si plusieurs fichiers au format correspondant sont transmis, on utilisera le dernier donné.
+```
+<obj>
+```
+: The .obj file to load
 
-On peut bouger la caméra avec ZQSD et zqsd.
+```
+<vert>
+```
+: The vertex shader with a .vert file extension
 
-On peut désactiver/activer la rotation de l'objet avec la touche p.
+```
+<frag>
+```
+: The fragment shader with a .frag file extension
+
+```
+<text>
+```
+: The texture with a .jpg file extension
+
+All of the arguments are optional, a default value has been specified.
+
+The camera can be moved using WASD and wasd
+
+The object rotation can be enabled/disabled with p.
