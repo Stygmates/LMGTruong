@@ -1,3 +1,5 @@
+SRCDIR = src/
+HEADERDIR = include/
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)
     CFLAGS = -O2 -Wall -DDEBUG
@@ -23,7 +25,6 @@ LINES ?= 0
 ifeq ($(LINES), 1)
 	LFLAG2 = -DLINES
 endif
-
 CC = g++
 LDFLAGS = -lGL -lglut -lGLEW -Iglm -lSOIL -lassimp -Iassimp -I /usr/include/SOIL
 EXEC = main
@@ -35,21 +36,21 @@ main.o: $(OBJ) $(LOADER) My3DModel.o Texture.o Shader.o
 	$(CC) $(CFLAGS) $(NFLAGS) $(LFLAG2) -std=c++11 -o main.o exo1.cpp $^ $(LDFLAGS)
 
 main: $(LOADER) My3DModel.o Texture.o Shader.o
-	$(CC) $(CFLAGS) -std=c++11 -o main main.cpp $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -std=c++11 -o main $(SRCDIR)main.cpp $^ $(LDFLAGS)
 
-Loader.o: Loader.cpp Loader.hpp
+Loader.o: $(SRCDIR)Loader.cpp $(HEADERDIR)Loader.hpp
 	$(CC) $(CFLAGS) -g -c $<
 
-My3DModel.o: My3DModel.cpp My3DModel.hpp
+My3DModel.o: $(SRCDIR)My3DModel.cpp $(HEADERDIR)My3DModel.hpp
 	$(CC) $(CFLAGS) $(LFLAG) $(NFLAGS) -g -c $<
 
-Texture.o: Texture.cpp Texture.hpp
+Texture.o: $(SRCDIR)Texture.cpp $(HEADERDIR)Texture.hpp
 	$(CC) $(CFLAGS) -g -c $< $(LDFLAGS)
 
-MeshLoader.o: MeshLoader.cpp MeshLoader.hpp
+MeshLoader.o: $(SRCDIR)MeshLoader.cpp $(HEADERDIR)MeshLoader.hpp
 	$(CC) $(CFLAGS) -std=c++11 -g -c $<
 
-%.o: %.cpp %.hpp
+%.o: $(SRCDIR)%.cpp $(HEADERDIR)%.hpp
 	$(CC) $(CFLAGS) -std=c++11 -g -c $< $(LDFLAGS)
 
 .PHONY: clean lib-deps
