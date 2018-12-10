@@ -1,0 +1,8 @@
+language: cpp
+compiler: gcc
+dist: bionic
+before_install:
+        - sudo apt-get install libassimp-dev libglm-dev libglew-dev libsoil-dev freeglut3-dev libboost-all-dev
+script:
+        - make
+        - xvfb-run ./main
