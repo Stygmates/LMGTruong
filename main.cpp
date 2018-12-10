@@ -26,6 +26,9 @@
 // - GLUT
 #include <GL/glut.h>
 
+
+#define GLM_ENABLE_EXPERIMENTAL
+
 // glm
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -1148,7 +1151,7 @@ void keyboard( unsigned char key, int x, int y)
 
 int main( int argc, char** argv )
 {
-	std::cout << "TP6 - Cubemap" << std::endl;
+	std::cout << "OpenGL obj display" << std::endl;
 
 	// Retrieve program/data directory
 	std::string programPath = argv[ 0 ];
